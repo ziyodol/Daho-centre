@@ -1,0 +1,10 @@
+
+{
+  "name": "Daho Centre",
+  "short_name": "Daho",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080b18",
+  "theme_color": "#080b18",
+  "orientation": "portrait"
+}

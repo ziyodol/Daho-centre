@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10152b">
+<title>DAHO CENTRE</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0b1020;--panel:#151d35;--panel2:#1c2745;--blue:#5685ff;--purple:#9467ff;--text:#f5f7ff;--muted:#a4afca;--green:#43d6a0}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.app{max-width:760px;margin:auto;padding:18px 16px 100px}
+.hidden{display:none!important}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.logo{font-size:22px;font-weight:900;letter-spacing:1px}
+.logo span{color:#8b9dff}
+.avatar{width:43px;height:43px;border-radius:15px;background:linear-gradient(135deg,var(--blue),var(--purple));display:grid;place-items:center;font-weight:900;font-size:18px}
+.hello{color:var(--muted);font-size:14px;margin-bottom:5px}
+h1{font-size:27px;line-height:1.2;margin-bottom:8px}
+.sub{color:var(--muted);font-size:14px;line-height:1.5}
+.hero{background:linear-gradient(130deg,#263f8b,#633cb1);padding:22px;border-radius:24px;margin:20px 0;position:relative;overflow:hidden}
+.hero:after{content:"✦";position:absolute;right:20px;top:5px;font-size:95px;color:#ffffff20}
+.hero small{color:#d9e2ff}
+.hero h2{font-size:23px;margin:8px 0}
+.hero p{font-size:13px;color:#e0e5ff}
+.progress{height:9px;background:#ffffff30;border-radius:20px;margin-top:17px;overflow:hidden}
+.progress i{display:block;height:100%;background:#6df0c1;border-radius:20px;width:0;transition:.3s}
+.section-title{font-size:18px;font-weight:800;margin:25px 0 13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--panel);border:1px solid #ffffff0d;padding:15px 10px;border-radius:17px;text-align:center}
+.stat strong{display:block;font-size:22px;color:#a9baff}
+.stat span{font-size:11px;color:var(--muted)}
+.subjects{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.subject{background:var(--panel);border:1px solid #ffffff10;border-radius:19px;padding:16px;text-align:left;color:var(--text);transition:.2s}
+.subject:active{transform:scale(.97)}
+.subject .emoji{font-size:28px;margin-bottom:10px}
+.subject strong{display:block;font-size:15px}
+.subject small{color:var(--muted);font-size:11px}
+.card{background:var(--panel);padding:18px;border-radius:20px;margin-top:14px;border:1px solid #ffffff0d}
+.btn{background:linear-gradient(110deg,var(--blue),var(--purple));color:white;padding:13px 18px;border-radius:14px;font-weight:800;width:100%;margin-top:12px}
+.btn.secondary{background:var(--panel2);border:1px solid #ffffff18}
+.btn.green{background:linear-gradient(110deg,#1baf85,#42d6a0);color:#061b17}
+input{width:100%;background:#0e162c;border:1px solid #344265;color:white;padding:14px;border-radius:13px;margin-top:8px;outline:none}
+input:focus{border-color:var(--blue)}
+label{font-size:13px;color:var(--muted);display:block;margin-top:15px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#11182cF2;backdrop-filter:blur(15px);border-top:1px solid #ffffff12;display:flex;justify-content:center;z-index:5}
+.navinner{max-width:760px;width:100%;display:flex;justify-content:space-around;padding:10px 5px calc(10px + env(safe-area-inset-bottom))}
+.navitem{background:none;color:var(--muted);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:62px}
+.navitem b{font-size:20px}
+.navitem.active{color:#9cb2ff}
+.page{animation:appear .25s ease}
+@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.back{background:var(--panel2);color:white;padding:9px 14px;border-radius:11px;margin-bottom:17px}
+.lesson{padding:15px;background:var(--panel);border-radius:15px;margin:12px 0;line-height:1.6}
+.lesson h3{margin-bottom:7px}
+.lesson p{color:#c1cbe1;font-size:14px}
+.note{background:#202e50;border-left:3px solid var(--blue);padding:12px;border-radius:9px;margin-top:12px;font-size:13px}
+.answer{display:block;width:100%;text-align:left;padding:14px;background:var(--panel2);border:1px solid #ffffff12;color:white;border-radius:13px;margin-top:10px}
+.answer.selected{border-color:var(--blue);background:#263c72}
+.answer.correct{border-color:var(--green);background:#164b3d}
+.answer.wrong{border-color:#ff7777;background:#542c3c}
+.feedback{margin-top:13px;font-size:14px;line-height:1.5}
+.badge{display:inline-block;background:#26375e;color:#c4d2ff;padding:7px 11px;border-radius:20px;font-size:12px;margin:4px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.muted{color:var(--muted);font-size:13px}
+.bigscore{font-size:38px;font-weight:900;color:#9eb5ff}
+.rankrow{display:flex;align-items:center;gap:12px;padding:13px;background:var(--panel);border-radius:14px;margin-top:9px}
+.ranknum{font-size:20px;width:30px;text-align:center}
+.rankavatar{width:38px;height:38px;border-radius:13px;background:#304777;display:grid;place-items:center}
+footer{text-align:center;color:#64718f;font-size:11px;margin-top:35px}
+.overlay{position:fixed;inset:0;background:#050816eF;z-index:10;display:grid;place-items:center;padding:20px}
+.modal{width:100%;max-width:420px;background:#17213a;border:1px solid #ffffff20;border-radius:24px;padding:24px;max-height:90vh;overflow:auto}
+.modal h2{font-size:24px;margin-bottom:8px}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#26375e;color:white;padding:12px 18px;border-radius:12px;z-index:20;font-size:13px;box-shadow:0 8px 30px #0008;max-width:90%;text-align:center}
+@media(min-width:600px){.subjects{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="logo">DAHO <span>CENTRE</span></div>
+ <div class="avatar" id="topAvatar">D</div>
+</header>
+<main id="main"></main>
+<footer>DAHO CENTRE • Bilim sari bir qadam!</footer>
+</div>
+<nav>
+ <div class="navinner">
+  <button class="navitem active" data-page="home"><b>⌂</b>Asosiy</button>
+  <button class="navitem" data-page="subjects"><b>▦</b>Fanlar</button>
+  <button class="navitem" data-page="rating"><b>🏆</b>Reyting</button>
+  <button class="navitem" data-page="profile"><b>♙</b>Profil</button>
+ </div>
+</nav>
+<div id="overlay" class="overlay hidden"></div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+const subjects=[
+ {id:"math",name:"Matematika",emoji:"📐",desc:"Sonlar va mantiq",lessons:[
+  ["Natural sonlar","Natural sonlar sanashda ishlatiladigan 1, 2, 3, 4 kabi sonlardir. Ular ustida qo‘shish, ayirish, ko‘paytirish va bo‘lish amallari bajariladi.","Masalan: 5 + 3 = 8."],
+  ["Kasrlar","Kasr butunning teng qismlaridan birini yoki bir nechtasini bildiradi. Surat yuqorida, maxraj pastda yoziladi.","1/2 — yarim, 1/4 — chorak."],
+  ["Foiz","Foiz sonning yuzdan bir qismini bildiradi. 1% = 1/100.","200 ning 10 foizi 20 ga teng."]
+ ],questions:[
+  ["7 × 8 nechaga teng?",["54","56","64","48"],1,"7 ni 8 ga ko‘paytirsak 56 bo‘ladi."],
+  ["1/2 ning o‘nli ko‘rinishi qaysi?",["0.2","0.25","0.5","1.2"],2,"Yarim — 0.5."],
+  ["200 ning 10 foizi qancha?",["10","20","30","40"],1,"200 × 10 / 100 = 20."],
+  ["15 + 27 nechaga teng?",["32","40","42","45"],2,"15 + 27 = 42."],
+  ["Kvadratning nechta tomoni bor?",["3","4","5","6"],1,"Kvadratning 4 ta tomoni bor."],
+  ["9 × 9 nechaga teng?",["72","81","90","99"],1,"9 × 9 = 81."],
+  ["1000 ning yarmi qancha?",["100","250","500","750"],2,"1000 / 2 = 500."],
+  ["Eng kichik tub son qaysi?",["1","2","3","0"],1,"Eng kichik tub son 2."]
+ ]},
+ {id:"info",name:"Informatika",emoji:"💻",desc:"Texnologiya va kod",lessons:[
+  ["Kompyuter","Kompyuter ma’lumotlarni qabul qilish, qayta ishlash, saqlash va uzatish uchun ishlatiladi.","Monitor — chiqarish qurilmasi, klaviatura — kiritish qurilmasi."],
+  ["Algoritm","Algoritm — masalani yechish uchun bajariladigan aniq ketma-ket ko‘rsatmalar.","Retsept ham algoritmga misol bo‘la oladi."],
+  ["Dasturlash","Dasturlash — kompyuterga vazifalarni bajarishni buyuradigan kod yozish jarayoni.","HTML veb-sahifa tuzilishini yaratishda ishlatiladi."]
+ ],questions:[
+  ["Kompyuterning miyasi nima?",["Monitor","Protsessor","Sichqoncha","Printer"],1,"Protsessor buyruqlarni bajaradi."],
+  ["HTML nima uchun ishlatiladi?",["Veb-sahifa tuzish","Rasm chizish","Musiqa tinglash","Hisoblash"],0,"HTML sahifa tuzilishini belgilaydi."],
+  ["Algoritm nima?",["O‘yin","Amallar ketma-ketligi","Qurilma","Fayl"],1,"Algoritm — aniq ko‘rsatmalar ketma-ketligi."],
+  ["Klaviatura nima?",["Chiqarish qurilmasi","Kiritish qurilmasi","Xotira","Protsessor"],1,"Klaviatura orqali ma’lumot kiritiladi."],
+  ["Internet nima?",["Global tarmoq","Monitor","Dastur","Klaviatura"],0,"Internet — butun dunyo kompyuter tarmoqlari tizimi."],
+  ["CSS nima qiladi?",["Sahifani bezaydi","Elektr beradi","Matn tarjima qiladi","Fayl o‘chiradi"],0,"CSS sahifaning ko‘rinishini boshqaradi."],
+  ["1 bayt necha bit?",["2","4","8","16"],2,"1 bayt = 8 bit."],
+  ["Brauzer nima?",["Veb-sahifa ko‘ruvchi dastur","O‘yin qurilmasi","Printer","Kalkulyator"],0,"Brauzer internet sahifalarini ochadi."]
+ ]},
+ {id:"english",name:"Ingliz tili",emoji:"🇬🇧",desc:"English learning",lessons:[
+  ["To be fe’li","Am, is, are — hozirgi zamonda 'bo‘lmoq' ma’nosini bildiradi. I am, he is, you are shakllari ishlatiladi.","I am a student. — Men o‘quvchiman."],
+  ["Present Simple","Present Simple odatiy va takrorlanadigan ish-harakatlarni ifodalaydi.","I play football every day."],
+  ["Olmoshlar","I — men, you — sen/siz, he — u (erkak), she — u (ayol), we — biz, they — ular.","She is my sister."]
+ ],questions:[
+  ["'Apple' so‘zining tarjimasi?",["Nok","Olma","Uzum","Shaftoli"],1,"Apple — olma."],
+  ["I ___ a student.",["is","are","am","be"],2,"I bilan am ishlatiladi."],
+  ["'Book' nimani anglatadi?",["Daftar","Kitob","Qalam","Sumka"],1,"Book — kitob."],
+  ["He ___ my friend.",["am","is","are","be"],1,"He bilan is ishlatiladi."],
+  ["'Water' tarjimasi?",["Suv","Olov","Havo","Yer"],0,"Water — suv."],
+  ["'Go' fe’lining tarjimasi?",["Kelmoq","Bormoq","Yozmoq","O‘qimoq"],1,"Go — bormoq."],
+  ["They ___ happy.",["is","am","are","be"],2,"They bilan are ishlatiladi."],
+  ["'Good morning' tarjimasi?",["Xayrli tun","Xayrli tong","Xayr","Rahmat"],1,"Good morning — xayrli tong."]
+ ]},
+ {id:"native",name:"Ona tili",emoji:"📚",desc:"Til va adabiyot",lessons:[
+  ["So‘z turkumlari","So‘zlar ma’nosi va grammatik xususiyatiga ko‘ra turkumlarga ajratiladi. Masalan, ot, sifat, son, fe’l.","'Kitob' — ot, 'chiroyli' — sifat."],
+  ["Gap bo‘laklari","Gap bo‘laklari bosh va ikkinchi darajali bo‘laklarga ajratiladi. Ega va kesim bosh bo‘laklardir.","'Ali kitob o‘qidi' gapida Ali — ega."],
+  ["Imlo qoidalari","Imlo qoidalari so‘zlarni to‘g‘ri yozishga yordam beradi. Tinish belgilari esa yozma nutqni tartibga soladi.","Gap oxirida nuqta qo‘yiladi."]
+ ],questions:[
+  ["Ot nimani bildiradi?",["Harakat","Narsa va shaxs nomi","Belgi","Miqdor"],1,"Ot shaxs va narsalarni nomlaydi."],
+  ["Fe’l nimani bildiradi?",["Harakat","Rang","Miqdor","Joy"],0,"Fe’l harakat yoki holatni bildiradi."],
+  ["Gapning bosh bo‘laklari qaysilar?",["Aniqlovchi va hol","Ega va kesim","To‘ldiruvchi va hol","Faqat ega"],1,"Ega va kesim bosh bo‘laklardir."],
+  ["Sifat nimani bildiradi?",["Harakat","Belgi","Miqdor","Narsa"],1,"Sifat predmet belgisini bildiradi."],
+  ["'Kitoblar' so‘zining o‘zagi?",["-lar","kitob","kitoblar","-ob"],1,"O‘zak — kitob."],
+  ["Gap oxirida darak gapda nima qo‘yiladi?",["Vergul","Nuqta","Ikki nuqta","Tire"],1,"Darak gap odatda nuqta bilan tugaydi."],
+  ["Unli tovushlar qanday aytiladi?",["To‘siq bilan","To‘siqsiz","Faqat shivirlab","Aytib bo‘lmaydi"],1,"Unlilar havo oqimi to‘siqsiz chiqishi bilan hosil bo‘ladi."],
+  ["Son qaysi so‘z turkumi?",["Mustaqil","Yordamchi","Undov","Bog‘lovchi"],0,"Son mustaqil so‘z turkumidir."]
+ ]},
+ {id:"physics",name:"Fizika",emoji:"⚡",desc:"Tabiat qonunlari",lessons:[
+  ["Tezlik","Tezlik jismning vaqt birligida bosib o‘tgan yo‘lini bildiradi. Formula: v = s / t.","Masalan, 100 metrni 20 sekundda bosib o‘tsa, tezlik 5 m/s."],
+  ["Kuch","Kuch jismlarning harakatini yoki shaklini o‘zgartirishi mumkin. Kuch birligi nyuton (N).","Og‘irlik kuchi Yer tortishishi bilan bog‘liq."],
+  ["Elektr toki","Elektr toki — zaryadlangan zarrachalarning tartibli harakati.","Tok kuchi amperda o‘lchanadi."]
+ ],questions:[
+  ["Tezlik formulasi qaysi?",["v=s/t","s=v/t","t=s×v","v=s×t"],0,"Tezlik yo‘lni vaqtga bo‘lish orqali topiladi."],
+  ["Kuch birligi nima?",["Joul","Vatt","Nyuton","Amper"],2,"Kuch nyutonda o‘lchanadi."],
+  ["Tok kuchi birligi?",["Volt","Amper","Metr","Kilogramm"],1,"Tok kuchi amperda o‘lchanadi."],
+  ["Energiya birligi?",["Joul","Nyuton","Metr","Sekund"],0,"Energiya joul bilan o‘lchanadi."],
+  ["Yorug‘lik tezligi taxminan?",["300 km/s","300 000 km/s","30 km/s","3000 km/s"],1,"Vakuumda yorug‘lik tezligi taxminan 300 000 km/s."],
+  ["Massa birligi?",["Kilogramm","Metr","Sekund","Amper"],0,"Massa kilogrammda o‘lchanadi."],
+  ["Harorat SI birligi?",["Selsiy","Kelvin","Joul","Vatt"],1,"SI tizimida harorat birligi kelvin."],
+  ["Ish formulasi?",["A=F×s","A=m×v","A=s/t","A=F/t"],0,"Mexanik ish kuch va yo‘l ko‘paytmasiga teng."]
+ ]},
+ {id:"chem",name:"Kimyo",emoji:"🧪",desc:"Moddalar olami",lessons:[
+  ["Atom","Atom — kimyoviy elementning xossalarini saqlaydigan eng kichik zarracha. Atom yadro va elektronlardan tashkil topadi.","Yadro proton va neytronlardan iborat."],
+  ["Kimyoviy element","Kimyoviy element bir xil yadro zaryadiga ega atomlar turidir.","Kislorod belgisi O, vodorod belgisi H."],
+  ["Suv","Suvning kimyoviy formulasi H₂O. Bitta molekulada ikki vodorod va bitta kislorod atomi bor.","Suv ko‘plab tabiiy jarayonlar uchun muhim."]
+ ],questions:[
+  ["Suv formulasi?",["CO2","H2O","O2","NaCl"],1,"Suv formulasi H₂O."],
+  ["Kislorod belgisi?",["K","O","H","C"],1,"Kislorod — O."],
+  ["Osh tuzining formulasi?",["H2O","NaCl","CO2","O2"],1,"Osh tuzi — NaCl."],
+  ["Atom yadrosida nimalar bor?",["Elektron va foton","Proton va neytron","Faqat elektron","Molekula"],1,"Yadro proton va neytronlardan tashkil topadi."],
+  ["Vodorod belgisi?",["V","H","O","N"],1,"Vodorod — H."],
+  ["CO2 nima?",["Kislorod","Karbonat angidrid","Suv","Azot"],1,"CO₂ — karbonat angidrid."],
+  ["Davriy jadvalni kim yaratgan?",["Nyuton","Mendeleyev","Eynshteyn","Farobiy"],1,"Davriy jadval Mendeleyev nomi bilan bog‘liq."],
+  ["Temir belgisi?",["Te","T","Fe","F"],2,"Temirning kimyoviy belgisi Fe."]
+ ]},
+ {id:"biology",name:"Biologiya",emoji:"🌱",desc:"Tirik tabiat",lessons:[
+  ["Hujayra","Hujayra tirik organizmlarning tuzilish va funksional birligidir. Ko‘plab organizmlar hujayralardan tashkil topgan.","O‘simlik hujayrasida hujayra devori mavjud."],
+  ["Fotosintez","Fotosintezda yashil o‘simliklar yorug‘lik energiyasidan foydalanib organik moddalar hosil qiladi.","Bu jarayonda kislorod ajralib chiqadi."],
+  ["Organlar","Organizmda turli organlar muayyan vazifalarni bajaradi. Masalan, yurak qonni haydaydi.","O‘pka nafas olishda ishtirok etadi."]
+ ],questions:[
+  ["Tirik organizmning asosiy birligi?",["Atom","Hujayra","Tog‘","Suv"],1,"Hujayra tiriklikning asosiy birligidir."],
+  ["Fotosintez qayerda sodir bo‘ladi?",["Yashil o‘simliklarda","Toshda","Metallarda","Faqat hayvonlarda"],0,"Fotosintez yashil o‘simliklarda sodir bo‘ladi."],
+  ["Yurakning vazifasi?",["Ovqat hazm qilish","Qonni haydash","Ko‘rish","Nafas olish"],1,"Yurak qonni haydaydi."],
+  ["Inson nafas olish organi?",["Oshqozon","O‘pka","Jigar","Buyrak"],1,"O‘pka nafas olish organidir."],
+  ["O‘simlikka fotosintez uchun nima kerak?",["Yorug‘lik","Plastmassa","Temir mix","Tuz"],0,"Fotosintez uchun yorug‘lik zarur."],
+  ["Qonning qizil hujayralari?",["Leykotsit","Eritrotsit","Neyron","Trombotsit"],1,"Eritrotsitlar kislorod tashishda qatnashadi."],
+  ["O‘simlik ildizining vazifasi?",["Suv va mineral moddalarni shimish","Ko‘rish","Ovoz chiqarish","Yurish"],0,"Ildiz suv va mineral moddalarni shimadi."],
+  ["Suyaklar qaysi tizimga kiradi?",["Nerv","Tayanch-harakat","Hazm","Nafas"],1,"Suyaklar tayanch-harakat tizimiga kiradi."]
+ ]},
+ {id:"history",name:"Tarix",emoji:"🏛️",desc:"O‘tmish saboqlari",lessons:[
+  ["Tarix fani","Tarix insoniyatning o‘tmishi, jamiyatlar va davlatlarning rivojlanishini o‘rganadi.","Tarixiy manbalar yozma, moddiy va og‘zaki bo‘lishi mumkin."],
+  ["Buyuk Ipak yo‘li","Buyuk Ipak yo‘li Sharq va G‘arbni bog‘lagan savdo yo‘llari tizimi bo‘lgan.","U orqali mahsulotlar, bilimlar va madaniyatlar almashilgan."],
+  ["Amir Temur","Amir Temur XIV asrda yashagan yirik davlat arbobi va sarkarda.","Samarqand uning davlatining muhim markazi bo‘lgan."]
+ ],questions:[
+  ["Tarix nimani o‘rganadi?",["Kelajakni","Insoniyat o‘tmishini","Faqat tabiatni","Matematikani"],1,"Tarix insoniyat o‘tmishini o‘rganadi."],
+  ["Buyuk Ipak yo‘li nimaga xizmat qilgan?",["Savdo va madaniy aloqalarga","Faqat urushga","Faqat dehqonchilikka","Sportga"],0,"U savdo va madaniy almashinuv yo‘li bo‘lgan."],
+  ["Amir Temur qaysi asrda yashagan?",["XII","XIII","XIV","XVI"],2,"Amir Temur XIV asrda yashagan."],
+  ["Samarqand qaysi davlat tarixida muhim markaz bo‘lgan?",["Temuriylar","Rim","Misr","Yunon"],0,"Samarqand Temuriylar davrida muhim markaz edi."],
+  ["Tarixiy manbaga qaysi biri misol?",["Qadimiy bitik","Kelajak rejasi","Fantastik film","Reklama"],0,"Qadimiy bitik tarixiy yozma manbadir."],
+  ["Arxeologiya nimani o‘rganadi?",["Qadimiy moddiy yodgorliklarni","Yulduzlarni","Ob-havoni","Til grammatikasini"],0,"Arxeologiya moddiy yodgorliklarni o‘rganadi."],
+  ["O‘zbekiston poytaxti?",["Buxoro","Samarqand","Toshkent","Xiva"],2,"O‘zbekiston poytaxti Toshkent."],
+  ["Buyuk Ipak yo‘li qaysi hududlarni bog‘lagan?",["Sharq va G‘arbni","Faqat shimolni","Faqat orollarni","Faqat Afrikani"],0,"U Sharq va G‘arb o‘rtasida aloqa o‘rnatgan."]
+ ]}
+];
+
+const defaultData=()=>({name:"",points:0,correct:0,tests:0,lessons:[],completedTests:[],joined:false,created:Date.now()});
+let data;
+try{data=JSON.parse(localStorage.getItem("dahoCentre_v2"))||defaultData()}catch(e){data=defaultData()}
+function save(){localStorage.setItem("dahoCentre_v2",JSON.stringify(data))}
+let page="home",activeSubject=null,quiz=null,quizIndex=0,quizAnswers=[],quizFinished=false,lessonIndex=0;
+const main=document.getElementById("main");
+const overlay=document.getElementById("overlay");
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function toast(s){let t=document.getElementById("toast");t.textContent=s;t.classList.remove("hidden");setTimeout(()=>t.classList.add("hidden"),2300)}
+function level(){return Math.floor(data.points/100)+1}
+function initials(){return (data.name||"D").trim().split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase()}
+function updateNav(){document.querySelectorAll(".navitem").forEach(b=>b.classList.toggle("active",b.dataset.page===page))}
+function go(p){page=p;activeSubject=null;updateNav();render()}
+document.querySelectorAll(".navitem").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+function render(){
+ document.getElementById("topAvatar").textContent=initials();
+ if(!data.joined){registration();return}
+ updateNav();
+ if(page==="home")home();
+ if(page==="subjects")subjectsPage();
+ if(page==="rating")ratingPage();
+ if(page==="profile")profilePage();
+}
+function registration(){
+ main.innerHTML=`<div class="page" style="padding-top:35px">
+ <div style="font-size:60px;text-align:center">🚀</div>
+ <div style="text-align:center;margin:18px 0 25px"><div class="logo" style="font-size:29px">DAHO <span>CENTRE</span></div><p class="sub">Bilim sari birinchi qadamingni tashla!</p></div>
+ <div class="card"><h2>Ro‘yxatdan o‘tish</h2><p class="sub" style="margin-top:7px">Ismingni yoz va bilim olamiga kir!</p>
+ <label>Ism va familiya</label><input id="regName" maxlength="40" placeholder="Masalan: Ali Valiyev" autocomplete="name">
+ <button class="btn" onclick="register()">Boshlash →</button>
+ <p class="muted" style="margin-top:12px">Ma’lumot faqat shu qurilmada saqlanadi. Parol yoki telefon raqami kerak emas.</p></div></div>`;
+}
+function register(){
+ let n=document.getElementById("regName").value.trim();
+ if(n.length<2){toast("Iltimos, ismingni yoz!");return}
+ data.name=n;data.joined=true;save();render();toast("Xush kelibsan, "+n+"!");
+}
+function home(){
+ let percent=Math.min(100,data.points%100);
+ main.innerHTML=`<div class="page">
+ <p class="hello">Xush kelibsan, ${esc(data.name)}! 👋</p><h1>Bugun nimani<br>o‘rganamiz?</h1>
+ <p class="sub">Har kuni ozgina bilim — katta natija!</p>
+ <div class="hero"><small>⭐ Sening darajang</small><h2>${level()}-daraja</h2><p>${data.points} ball • Keyingi darajagacha ${100-percent} ball</p><div class="progress"><i style="width:${percent}%"></i></div></div>
+ <div class="stats">
+ <div class="stat"><strong>${data.points}</strong><span>⭐ Ball</span></div>
+ <div class="stat"><strong>${data.tests}</strong><span>📝 Testlar</span></div>
+ <div class="stat"><strong>${data.correct}</strong><span>✅ To‘g‘ri javob</span></div>
+ </div>
+ <div class="section-title">📚 Fanlarni o‘rganish</div><div class="subjects">${subjects.slice(0,4).map(subjectCard).join("")}</div>
+ <button class="btn secondary" onclick="go('subjects')">Barcha 8 ta fanni ko‘rish →</button>
+ <div class="section-title">🏅 Yutuqlaring</div>${achievementHTML()}
+ </div>`;
+}
+function subjectCard(s){
+ let done=data.lessons.filter(x=>x.startsWith(s.id+":")).length;
+ return `<button class="subject" onclick="openSubject('${s.id}')"><div class="emoji">${s.emoji}</div><strong>${s.name}</strong><small>${done}/${s.lessons.length} dars tugallangan</small></button>`;
+}
+function subjectsPage(){
+ main.innerHTML=`<div class="page"><p class="hello">Bilimingni oshir</p><h1>Barcha fanlar 📚</h1><p class="sub">O‘zing istagan fanni tanla va darslarni boshlagin.</p><div class="subjects" style="margin-top:20px">${subjects.map(subjectCard).join("")}</div></div>`;
+}
+function openSubject(id){activeSubject=subjects.find(s=>s.id===id);if(!activeSubject)return;subjectPage()}
+function subjectPage(){
+ let s=activeSubject,done=data.lessons.filter(x=>x.startsWith(s.id+":")).length;
+ main.innerHTML=`<div class="page"><button class="back" onclick="go('subjects')">← Orqaga</button>
+ <div style="font-size:45px">${s.emoji}</div><h1>${s.name}</h1><p class="sub">${s.desc}</p>
+ <div class="card"><div class="row"><strong>Darslar bajarilishi</strong><strong>${done}/${s.lessons.length}</strong></div><div class="progress"><i style="width:${done/s.lessons.length*100}%"></i></div></div>
+ <div class="section-title">📖 Darslar</div>
+ ${s.lessons.map((l,i)=>`<div class="lesson"><div class="row"><h3>${i+1}. ${l[0]}</h3>${data.lessons.includes(s.id+":"+i)?'<span>✅</span>':''}</div><p>${l[1]}</p><div class="note">💡 ${l[2]}</div><button class="btn ${data.lessons.includes(s.id+":"+i)?"secondary":"green"}" onclick="completeLesson('${s.id}',${i})">${data.lessons.includes(s.id+":"+i)?"Tugallangan ✓":"+5 ball — Darsni tugatish"}</button></div>`).join("")}
+ <div class="section-title">🧠 Bilimingni sinab ko‘r</div><div class="card"><p class="sub">Har bir testda 5 ta savol bor. Har bir to‘g‘ri javob uchun 10 ball olasan.</p><button class="btn" onclick="startQuiz('${s.id}')">Testni boshlash →</button></div>
+ </div>`;
+}
+function completeLesson(id,i){
+ let key=id+":"+i;if(data.lessons.includes(key)){toast("Bu dars allaqachon tugallangan!");return}
+ data.lessons.push(key);data.points+=5;save();subjectPage();toast("+5 ball! Ajoyib!");
+}
+function startQuiz(id){
+ activeSubject=subjects.find(s=>s.id===id);
+ quiz=[...activeSubject.questions].sort(()=>Math.random()-.5).slice(0,5);
+ quizIndex=0;quizAnswers=[];quizFinished=false;showQuestion();
+}
+function showQuestion(){
+ if(quizIndex>=quiz.length){finishQuiz();return}
+ let q=quiz[quizIndex];
+ main.innerHTML=`<div class="page"><button class="back" onclick="subjectPage()">← Darsga qaytish</button>
+ <div class="row"><span class="badge">${activeSubject.name}</span><span class="muted">${quizIndex+1}/${quiz.length}</span></div>
+ <div class="progress"><i style="width:${(quizIndex+1)/quiz.length*100}%"></i></div>
+ <div class="card" style="margin-top:22px"><p class="muted">SAVOL ${quizIndex+1}</p><h2 style="font-size:21px;margin-top:12px">${q[0]}</h2>
+ ${q[1].map((a,i)=>`<button class="answer" onclick="chooseAnswer(${i})">${String.fromCharCode(65+i)}. ${a}</button>`).join("")}
+ <div id="feedback" class="feedback"></div><button id="nextQuestion" class="btn hidden" onclick="nextQuestion()">Keyingi savol →</button></div></div>`;
+}
+function chooseAnswer(i){
+ if(quizAnswers[quizIndex]!==undefined)return;
+ let q=quiz[quizIndex];quizAnswers[quizIndex]=i;
+ document.querySelectorAll(".answer").forEach((b,j)=>{
+  if(j===q[2])b.classList.add("correct");
+  else if(j===i)b.classList.add("wrong");
+ });
+ let correct=i===q[2];
+ document.getElementById("feedback").innerHTML=`<strong>${correct?"✅ To‘g‘ri!":"❌ Xato!"}</strong><br>${q[3]}`;
+ document.getElementById("nextQuestion").classList.remove("hidden");
+}
+function nextQuestion(){quizIndex++;showQuestion()}
+function finishQuiz(){
+ let score=quiz.reduce((n,q,i)=>n+(quizAnswers[i]===q[2]?1:0),0);
+ data.tests++;data.correct+=score;data.points+=score*10;
+ data.completedTests.push({subject:activeSubject.id,score:score,total:5,date:Date.now()});
+ save();
+ main.innerHTML=`<div class="page" style="text-align:center;padding-top:35px"><div style="font-size:65px">🏆</div><h1>Test yakunlandi!</h1><p class="sub">Natijang bilan tanish</p>
+ <div class="card"><div class="bigscore">${score*20}%</div><p>${score} ta to‘g‘ri javob / 5 ta savol</p><div class="badge">+${score*10} ball</div><div class="progress"><i style="width:${score*20}%"></i></div></div>
+ <button class="btn" onclick="subjectPage()">Darsga qaytish</button><button class="btn secondary" onclick="startQuiz('${activeSubject.id}')">Yana test ishlash</button><button class="btn secondary" onclick="go('home')">Asosiy sahifa</button></div>`;
+}
+function achievementHTML(){
+ let a=[
+ ["🌱","Birinchi qadam",data.lessons.length>=1,"Birinchi darsni tugat"],
+ ["📖","Bilimdon",data.lessons.length>=5,"5 ta darsni tugat"],
+ ["🧠","Sinovchi",data.tests>=1,"Birinchi testni ishlа"],
+ ["⭐","Yulduz",data.points>=100,"100 ball yig‘"],
+ ["🏆","Chempion",data.points>=500,"500 ball yig‘"],
+ ["🔥","Faol o‘quvchi",data.tests>=5,"5 ta testni ishlа"]
+ ];
+ return `<div class="card">${a.map(x=>`<div class="row" style="padding:9px 0;opacity:${x[2]?1:.45}"><span>${x[0]} ${x[1]}<div class="muted">${x[3]}</div></span><strong>${x[2]?"✅":"🔒"}</strong></div>`).join("")}</div>`;
+}
+function ratingPage(){
+ main.innerHTML=`<div class="page"><p class="hello">Natijalaringni kuzat</p><h1>🏆 Reyting</h1><p class="sub">Bu qurilmadagi o‘quvchilar reytingi.</p>
+ <div class="card"><div class="bigscore">${data.points}</div><p class="muted">Sening ballaring</p><div class="badge">${level()}-daraja</div></div>
+ <div class="section-title">Sening natijang</div><div class="rankrow"><div class="ranknum">⭐</div><div class="rankavatar">${initials()}</div><div style="flex:1"><strong>${esc(data.name)} (Sen)</strong><div class="muted">${level()}-daraja</div></div><strong>${data.points}</strong></div>
+ <div class="card"><p class="muted">Eslatma: bu reyting faqat ushbu telefonda saqlanadigan natijalarni ko‘rsatadi. Haqiqiy umumiy onlayn reyting uchun server kerak bo‘ladi.</p></div></div>`;
+}
+function profilePage(){
+ main.innerHTML=`<div class="page"><p class="hello">Shaxsiy sahifang</p><h1>Profil 👤</h1>
+ <div class="card" style="text-align:center;padding:25px"><div class="avatar" style="width:75px;height:75px;margin:auto;font-size:26px">${initials()}</div><h2 style="margin-top:13px">${esc(data.name)}</h2><p class="muted">${level()}-daraja o‘quvchisi</p><div class="bigscore">${data.points}</div><p class="muted">Jami ball</p><button class="btn secondary" onclick="editName()">Ismni o‘zgartirish</button></div>
+ <div class="section-title">📊 Statistikam</div><div class="stats">
+ <div class="stat"><strong>${data.tests}</strong><span>Testlar</span></div>
+ <div class="stat"><strong>${data.correct}</strong><span>To‘g‘ri javob</span></div>
+ <div class="stat"><strong>${data.lessons.length}</strong><span>Darslar</span></div></div>
+ <div class="section-title">🏅 Yutuqlar</div>${achievementHTML()}
+ <div class="section-title">⚙️ Sozlamalar</div><div class="card"><button class="btn secondary" onclick="editName()">Ismni o‘zgartirish</button><button class="btn secondary" onclick="exportData()">Natijalarni zaxiralash</button><button class="btn secondary" onclick="resetProgress()">Barcha natijalarni qayta boshlash</button></div></div>`;
+}
+function editName(){
+ let n=prompt("Ism va familiyangni yoz:",data.name);
+ if(n&&n.trim().length>=2){data.name=n.trim().slice(0,40);save();render();toast("Profil yangilandi!")}
+}
+function exportData(){
+ let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ let url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="daho-centre-natijalar.json";a.click();URL.revokeObjectURL(url);
+ toast("Zaxira fayli tayyor!");
+}
+function resetProgress(){
+ if(!confirm("Barcha ballar, testlar va darslar o‘chiriladi. Davom etamizmi?"))return;
+ let name=data.name;data=defaultData();data.name=name;data.joined=true;save();render();toast("Natijalar qayta boshlandi.");
+}
+render();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("Daho Centre tayyor!"))
+      .catch(error => console.log(error));
+  });
+}
+</script>
+</body>
+</html>
